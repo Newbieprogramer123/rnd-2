@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research and Development</title>
+    <style>
+        body {
+            font-family: 'Worksans', sans-serif; /* Mengubah tipe font menjadi Worksans */
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: #333;
+            color: white;
+        }
+        header img {
+            height: 80px; /* Ukuran logo */
+        }
+        nav {
+            text-align: right;
+        }
+        nav a {
+            margin-left: 20px;
+            font-size: 18px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #444;
+            border-radius: 5px;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        .content {
+            padding: 20px;
+            display: none; /* Sembunyikan semua konten awalnya */
+        }
+        .active {
+            display: block; /* Tampilkan konten yang aktif */
+        }
+        .folder {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .folder div {
+            margin: 0 20px;
+            text-align: center;
+        }
+        .folder img {
+            width: 150px;
+            height: auto;
+            cursor: pointer;
+        }
+        .folder p {
+            font-size: 18px;
+            color: #666;
+        }
+        /* Styling untuk teks dan gambar */
+        .description {
+            text-align: center; /* Rata tengah untuk deskripsi */
+            max-width: 800px; /* Lebar maksimal untuk teks */
+            margin-bottom: 20px; /* Margin bawah untuk jarak dengan gambar */
+            margin-right: auto; /* Untuk menyelaraskan batas tepi kanan */
+            margin-left: auto; /* Untuk menyelaraskan batas tepi kiri */
+        }
+        h1 {
+            text-align: center; /* Rata tengah untuk judul */
+        }
+        .slideshow {
+            width: 640px; /* Lebar slideshow */
+            height: 480px; /* Tinggi slideshow */
+            display: block; /* Memastikan gambar ditampilkan dalam block */
+            margin: 0 auto; /* Menghapus margin dan menempatkan gambar di tengah */
+            position: relative; /* Mengatur posisi relatif untuk tombol */
+            overflow: hidden; /* Menyembunyikan elemen yang melampaui batas */
+        }
+        /* Styling untuk tombol */
+        .button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0; /* Mulai dengan opacity 0 */
+            transition: opacity 0.3s; /* Transisi untuk efek muncul */
+        }
+        .prev {
+            left: 10px; /* Posisi tombol previous */
+        }
+        .next {
+            right: 10px; /* Posisi tombol next */
+        }
+        /* Menampilkan tombol saat hover */
+        .slideshow:hover .button {
+            opacity: 1; /* Mengubah opacity menjadi 1 saat hover */
+        }
+        /* Styling untuk video */
+        iframe {
+            width: 640px; /* Lebar video */
+            height: 480px; /* Tinggi video */
+            border: none; /* Menghapus border */
+            display: block; /* Menampilkan video dalam block */
+            margin: 20px auto; /* Menghapus margin dan menempatkan video di tengah */
+        }
+    </style>
+    <script>
+        let slideIndex = 0;
+        let slides = [];
+        const slideInterval = 5000; // Waktu pergantian gambar dalam milidetik (5 detik)
+
+        function showSlides() {
+            const slidesContainer = document.getElementById("slideshow");
+            slidesContainer.innerHTML = slides[slideIndex]; // Ganti gambar atau video
+        }
+
+        function initSlides() {
+            slides = [
+                '<img src="https://i.imgur.com/to8y6vt.png" alt="Image 1" width="640" height="480" />', // Gambar pertama
+                '<img src="https://i.imgur.com/to8y6vt.png" alt="Image 2" width="640" height="480" />', // Gambar kedua
+                '<div style="position: relative;">' + // Video pertama
+                '<iframe src="https://www.youtube.com/embed/N-Gh5Sez53U" allowfullscreen></iframe>' +
+                '<button class="button next" onclick="nextVideo(); event.stopPropagation();">Next</button>' +
+                '</div>',
+                '<div style="position: relative;">' + // Video kedua
+                '<iframe src="https://www.youtube.com/embed/RF3PVySYi2o" allowfullscreen></iframe>' +
+                '<button class="button next" onclick="nextVideo(); event.stopPropagation();">Next</button>' +
+                '</div>'
+            ];
+            showSlides(); // Tampilkan gambar/video pertama
+        }
+
+        function nextSlide() {
+            slideIndex = (slideIndex + 1) % slides.length; // Pergi ke gambar/video berikutnya
+            showSlides(); // Tampilkan gambar/video
+        }
+
+        function previousSlide() {
+            slideIndex = (slideIndex - 1 + slides.length) % slides.length; // Pergi ke gambar/video sebelumnya
+            showSlides(); // Tampilkan gambar/video
+        }
+
+        function nextVideo() {
+            if (slideIndex < slides.length - 1) { // Cek apakah video selanjutnya ada
+                slideIndex++;
+            } else {
+                slideIndex = 0; // Kembali ke gambar pertama setelah video terakhir
+            }
+            showSlides(); // Tampilkan video/gambar
+        }
+
+        function showContent(contentId) {
+            // Sembunyikan semua konten
+            var contents = document.querySelectorAll('.content');
+            contents.forEach(function(content) {
+                content.classList.remove('active');
+            });
+            // Tampilkan konten yang diinginkan
+            document.getElementById(contentId).classList.add('active');
+        }
+    </script>
+</head>
+<body onload="initSlides()"> <!-- Inisialisasi slideshow saat halaman dimuat -->
+    <header>
+        <img src="https://i.imgur.com/6e4473W.png" alt="Logo"> <!-- Logo di pojok kiri -->
+        <nav>
+            <a href="javascript:void(0);" onclick="showContent('home')">Home</a>
+            <a href="javascript:void(0);" onclick="showContent('patent')">Patent</a>
+            <a href="javascript:void(0);" onclick="showContent('project')">Project</a>
+            <a href="javascript:void(0);" onclick="showContent('report')">Report</a>
+        </nav>
+    </header>
+
+    <!-- Home Content -->
+    <div id="home" class="content active">
+        <h1>WIR - Research and Development</h1>
+        <p class="description">
+            Research and development (R&D) is the process of exploring and creating new ideas, products, or technologies through systematic investigation. It drives innovation, enhances efficiency, and fosters competitiveness by identifying solutions to complex problems, leading to improved products, services, and processes that benefit businesses and society.
+        </p>
+        <div id="slideshow" class="slideshow" onclick="nextSlide()"> <!-- Slideshow -->
+            <button class="button prev" onclick="previousSlide(); event.stopPropagation();">Previous</button> <!-- Tombol Previous -->
+            <button class="button next" onclick="nextSlide(); event.stopPropagation();">Next</button> <!-- Tombol Next -->
+        </div> 
+    </div>
+
+    <!-- Patent Content -->
+    <div id="patent" class="content">
+        <h1>PATENT</h1>
+        <div class="folder">
+            <div>
+                <a href="https://drive.google.com/drive/folders/1JpxVHA-vtjPv_xK66DNWZhzCKp2C4lDW" target="_blank">
+                    <img src="https://i.imgur.com/O7qW5Dv.png" alt="Patent 2023">
+                    <p>Patent 2023</p>
+                </a>
+            </div>
+            <div>
+                <a href="https://drive.google.com/drive/folders/1vQNmEVb_oEXnRpAS3fR25OU7VpQ4adRC" target="_blank">
+                    <img src="https://i.imgur.com/O7qW5Dv.png" alt="Patent 2024">
+                    <p>Patent 2024</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Content -->
+    <div id="project" class="content">
+        <h1>PROJECT</h1>
+        <div class="folder">
+            <div>
+                <a href="https://drive.google.com/drive/folders/10pIyEYpcmFLp6A0L0WAF5B97C-rmNCuL" target="_blank">
+                    <img src="https://i.imgur.com/cZgy4CJ.png" alt="Project 2023">
+                    <p>Project 2023</p>
+                </a>
+            </div>
+            <div>
+                <a href="https://drive.google.com/drive/folders/1iPHzm2jxrxRvU5qpRBexmktKtBDK1-hK" target="_blank">
+                    <img src="https://i.imgur.com/cZgy4CJ.png" alt="Project 2024">
+                    <p>Project 2024</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Content -->
+    <div id="report" class="content">
+        <h1>REPORT</h1>
+        <div class="folder">
+            <div>
+                <a href="https://drive.google.com/drive/folders/1Q-S8K9R3OiFEkHPRzbF-dj86LYaf9u9q" target="_blank">
+                    <img src="https://i.imgur.com/eykQehp.png" alt="Report">
+                    <p>Report</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
